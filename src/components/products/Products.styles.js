@@ -8,8 +8,9 @@ export const ProductsList = styled.div`
 export const Product = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
   margin-top: 10px;
+  gap: 15px;
 `
 
 export const ProductTitle = styled.div`

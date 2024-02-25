@@ -1,24 +1,29 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import uniqBy from 'lodash/uniqBy'
 import { getProducts } from '../../api/apiProduct'
 import { Filters } from '../../components/filters/Filters'
 import { Products } from '../../components/products/Products'
-// import { Pagination } from '../../components/pagination/Pagination'
 import * as S from './MainPage.styles'
+import { Loader } from '../../App.styles'
+import { Pagination } from '../../components/pagination/Pagination'
 
 export const MainPage = () => {
-  // const [error, setError] = useState(null)
-  // const [isLoading, setIsLoading] = useState(true)
-  // const [pageNumber, setPageNumber] = useState(0)
-  // const [action, setAction] = useState('')
+  const [productList, setProductList] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const getDataProducts = async () => {
     await getProducts()
+      //
       .then((response) => {
-        console.log(response.result)
+        const dataProductList = uniqBy(response.data.result, 'id')
+        setProductList(dataProductList)
       })
       .catch((er) => {
-        console.log(er.response.status)
+        console.log(
+          `API вернуло ошибку. Идентификатор ошибки ${er.response.status}`,
+        )
       })
+    .finally(() => setIsLoading(false))
   }
 
   useEffect(() => {
@@ -35,8 +40,14 @@ export const MainPage = () => {
         <S.ProductListTitle03>Бренд</S.ProductListTitle03>
         <S.ProductListTitle04>ID</S.ProductListTitle04>
       </S.MainContent>
-      <Products />
-      {/* <Pagination /> */}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <Products productList={productList} />
+          <Pagination />
+        </>
+      )}
     </>
   )
 }

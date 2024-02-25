@@ -3,10 +3,15 @@ import { PASSWORD, BASE_URL, PER_PAGE } from '../utils/constants'
 import md5 from 'blueimp-md5'
 import { dateNow } from '../utils/formatDate'
 
-export async function getProducts() {
-  const token = md5(`${PASSWORD}_${dateNow}`)
+const token = md5(`${PASSWORD}_${dateNow}`)
+const authHeder = {
+  headers: {
+    'X-Auth': token,
+  },
+}
 
-  const response = await axios.post(
+export async function getProducts() {
+  const responseIdList = await axios.post(
     BASE_URL,
     {
       action: 'get_ids',
@@ -15,12 +20,19 @@ export async function getProducts() {
         limit: PER_PAGE,
       },
     },
-    {
-      headers: {
-        'X-Auth': token,
-      },
-    },
+    authHeder,
   )
 
+  const response = await axios.post(
+    BASE_URL,
+    {
+      action: 'get_items',
+      params: {
+        ids: responseIdList.data.result,
+      },
+    },
+    authHeder,
+  )
   return response
 }
+

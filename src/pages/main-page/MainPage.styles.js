@@ -14,6 +14,7 @@ export const MainContent = styled.div`
   flex-direction: row;
   align-items: center;
   margin-bottom: 24px;
+  gap: 15px;
 `
 
 export const ProductListTitle = styled.div`
