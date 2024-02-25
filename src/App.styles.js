@@ -100,7 +100,7 @@ export const Loader = styled.div`
 `
 
 export const Error = styled.div`
-  color: coral;
+  color: #a4082a;
   font-weight: 400;
   font-size: 18px;
   line-height: 24px;

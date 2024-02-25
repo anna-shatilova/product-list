@@ -10,13 +10,23 @@ const authHeder = {
   },
 }
 
-export async function getProducts() {
+export async function getProducts({ pageNumber, setPagesCount }) {
+  const responseId = await axios.post(
+    BASE_URL,
+    {
+      action: 'get_ids',
+    },
+    authHeder,
+  )
+
+  setPagesCount(Math.ceil(responseId.data.result.length / PER_PAGE))
+
   const responseIdList = await axios.post(
     BASE_URL,
     {
       action: 'get_ids',
       params: {
-        offset: 1,
+        offset: `${pageNumber}`,
         limit: PER_PAGE,
       },
     },
