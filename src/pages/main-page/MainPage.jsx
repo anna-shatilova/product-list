@@ -8,15 +8,19 @@ import { Loader, Error } from '../../App.styles'
 import { Pagination } from '../../components/pagination/Pagination'
 
 export const MainPage = () => {
-  
   const [productList, setProductList] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
   const [pageNumber, setPageNumber] = useState(1)
   const [pagesCount, setPagesCount] = useState(0)
+  const [filter, setFilter] = useState('')
+
+  // const [productName, setProductName] = useState([])
+  // const [productPrice, setProductPrice] = useState([])
+  // const [productBrand, setProductBrand] = useState('')
 
   const getDataProducts = async () => {
-    await getProducts({ pageNumber, setPagesCount })
+    await getProducts({ pageNumber, setPagesCount, filter })
       .then((response) => {
         const dataProductList = uniqBy(response.data.result, 'id')
         setProductList(dataProductList)
@@ -34,7 +38,7 @@ export const MainPage = () => {
 
   useEffect(() => {
     getDataProducts()
-  }, [pageNumber])
+  }, [pageNumber, filter])
 
   const handleNextPageClick = useCallback(() => {
     const current = pageNumber
@@ -56,7 +60,7 @@ export const MainPage = () => {
   return (
     <>
       <S.MainTitle>Список товаров</S.MainTitle>
-      <Filters />
+      <Filters setFilter={setFilter} />
       <S.MainContent>
         <S.ProductListTitle01>Название</S.ProductListTitle01>
         <S.ProductListTitle02>Цена</S.ProductListTitle02>
