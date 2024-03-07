@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import * as S from './Filters.styles'
-import { PopupName } from './PopupName'
-import { PopupPrice } from './PopupPrice'
-import { PopupBrand } from './PopupBrand'
+import { Popup } from './Popup'
 
-export const Filters = ({ setFilter }) => {
+export const Filters = ({ fieldPopup, setFilter }) => {
   const [activeFilter, setActiveFilter] = useState()
 
   const handleActiveFilter = (filter) => {
@@ -24,11 +22,7 @@ export const Filters = ({ setFilter }) => {
         названию
       </S.FilterButton>
       {activeFilter === 'product' && (
-        <PopupName />
-
-        // data={data}
-        // authorTrack={authorTrack}
-        // setAuthorTrack={setAuthorTrack}
+        <Popup data={fieldPopup} />
       )}
 
       <S.FilterButton
@@ -39,7 +33,7 @@ export const Filters = ({ setFilter }) => {
       >
         цене
       </S.FilterButton>
-      {activeFilter === 'price' && <PopupPrice />}
+      {activeFilter === 'price' && <Popup data={fieldPopup} />}
 
       <S.FilterButton
         aria-hidden="true"
@@ -49,7 +43,7 @@ export const Filters = ({ setFilter }) => {
       >
         бренду
       </S.FilterButton>
-      {activeFilter === 'brand' && <PopupBrand />}
+      {activeFilter === 'brand' && <Popup data={fieldPopup} />}
     </S.FilterContainer>
   )
 }

@@ -42,7 +42,7 @@ export const FilterPopup = styled.div`
   border-radius: 12px;
   background: #313131;
   box-sizing: border-box;
-  min-width: 269px;
+  min-width: 469px;
   padding: 32px 32px 4px 32px;
   position: absolute;
   top: 270px;
@@ -50,7 +50,7 @@ export const FilterPopup = styled.div`
 
 export const PopupList = styled.ul`
   max-height: 212px;
-  max-width: 242px;
+  max-width: 442px;
   overflow-y: auto;
 
   &::scrollbar {
@@ -79,9 +79,9 @@ export const PopupText = styled.li`
   padding-bottom: 28px;
 
   &:hover {
-    color: #b672ff;
+    color: #a4082a;
     cursor: pointer;
-    text-decoration: underline #b672ff;
+    text-decoration: underline #a4082a;
   }
 
   ${({ $activeFilter }) =>

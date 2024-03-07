@@ -10,8 +10,13 @@ const authHeder = {
   },
 }
 
-export async function getProducts({ pageNumber, setPagesCount, filter }) {
-  // if (!filter) {
+export async function getProducts({
+  pageNumber,
+  setPagesCount,
+  filter,
+  // valueField,
+}) {
+  if (!filter) {
     const responseId = await axios.post(
       BASE_URL,
       {
@@ -45,44 +50,46 @@ export async function getProducts({ pageNumber, setPagesCount, filter }) {
       authHeder,
     )
     return response
-  // } else {
-    // console.log(filter)
-    // const response =
-    //  await axios.post(
-    //   BASE_URL,
-    //   {
-    //     action: 'get_fields',
-    //     params: {
-    //       field: `${currentField}`,
-    //     },
-    //   },
-    //   authHeder,
-    // )
-
-    // console.log(`first ${responseFields}`)
-    // const responseCurrentField = await axios.post(
-    //   BASE_URL,
-    //   {
-    //     action: 'filter',
-    //     params: {
-    //       filter: `${responseFields}.data.${filter}`,
-    //     },
-    //   },
-    //   authHeder,
-    // )
-    // console.log(`second ${responseCurrentField}`)
-    // const response = await axios.post(
-    //   BASE_URL,
-    //   {
-    //     action: 'get_items',
-    //     params: {
-    //       ids: responseCurrentField.data.result,
-    //     },
-    //   },
-    //   authHeder,
-    // )
+  }
+  if (filter) {
+    const response = await axios.post(
+      BASE_URL,
+      {
+        action: 'get_fields',
+        params: {
+          field: filter,
+        },
+      },
+      authHeder,
+    )
+    return response
+  }
+  // if (filter && valueField) {
+  //   const response = await axios.post(
+  //     BASE_URL,
+  //     {
+  //       action: 'filter',
+  //       params: {
+  //         filter: valueField,
+  //       },
+  //     },
+  //     authHeder,
+  //   )
   //   return response
   // }
+
+  // console.log(`first ${responseFields}`)
+  // console.log(`second ${responseCurrentField}`)
+  // const response = await axios.post(
+  //   BASE_URL,
+  //   {
+  //     action: 'get_items',
+  //     params: {
+  //       ids: responseCurrentField.data.result,
+  //     },
+  //   },
+  //   authHeder,
+  // )
 }
 
 // export async function getProductsFilter() {
