@@ -1,4 +1,4 @@
-# Название проекта: Search users
+# Название проекта: Product list
 
 ## Описание проекта
 
@@ -19,9 +19,12 @@
 - React Router
 - Styled components
 
-### Библиотека
+### Библиотеки
 
 - axios
+- blueimp-md5
+- date-fns
+- lodash
 
 ## Инструкция по запуску проекта
 
@@ -48,4 +51,5 @@ npm run start
 
 ## Деплой приложения
 
-Приложение доступно по ссылке 
+Приложение доступно по ссылке
+tiny-treacle-2ead34.netlify.app
