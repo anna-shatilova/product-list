@@ -20,7 +20,6 @@ export async function getProducts({
     const responseId = await axios.post(
       BASE_URL,
       {
-        referrerPolicy: 'unsafe_url',
         action: 'get_ids',
       },
       authHeder,
@@ -31,7 +30,6 @@ export async function getProducts({
     const responseIdList = await axios.post(
       BASE_URL,
       {
-        referrerPolicy: 'unsafe_url',
         action: 'get_ids',
         params: {
           offset: pageNumber,
@@ -44,7 +42,6 @@ export async function getProducts({
     const response = await axios.post(
       BASE_URL,
       {
-        referrerPolicy: 'unsafe_url',
         action: 'get_items',
         params: {
           ids: responseIdList.data.result,
@@ -59,7 +56,6 @@ export async function getProducts({
     const responseProductList = await axios.post(
       BASE_URL,
       {
-        referrerPolicy: 'unsafe_url',
         action: 'filter',
         params: {
           product: valueField,
@@ -71,8 +67,7 @@ export async function getProducts({
 
     const response = await axios.post(
       BASE_URL,
-      {
-        referrerPolicy: 'unsafe_url',
+      {        
         action: 'get_items',
         params: {
           ids: responseProductList.data.result,
@@ -90,7 +85,6 @@ export async function getProducts({
     const responsePriceList = await axios.post(
       BASE_URL,
       {
-        referrerPolicy: 'unsafe_url',
         action: 'filter',
         params: {
           price: valueField,
@@ -103,7 +97,6 @@ export async function getProducts({
     const response = await axios.post(
       BASE_URL,
       {
-        referrerPolicy: 'unsafe_url',
         action: 'get_items',
         params: {
           ids: responsePriceList.data.result,
@@ -120,7 +113,6 @@ export async function getProducts({
     const responseBrandList = await axios.post(
       BASE_URL,
       {
-        referrerPolicy: 'unsafe_url',
         action: 'filter',
         params: {
           brand: valueField,
@@ -133,7 +125,6 @@ export async function getProducts({
     const response = await axios.post(
       BASE_URL,
       {
-        referrerPolicy: 'unsafe_url',
         action: 'get_items',
         params: {
           ids: responseBrandList.data.result,
@@ -151,7 +142,6 @@ export async function getFields({ filter }) {
   const response = await axios.post(
     BASE_URL,
     {
-      referrerPolicy: 'unsafe_url',
       action: 'get_fields',
       params: {
         field: filter,
