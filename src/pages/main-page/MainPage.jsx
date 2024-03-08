@@ -14,40 +14,14 @@ export const MainPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
   const [pagesCount, setPagesCount] = useState(0)
   const [filter, setFilter] = useState('')
-  const [fieldPopup, setFieldPopup] = useState([])
-  // const [valueField, setValueField] = useState()
+  const [valueField, setValueField] = useState()
 
   const getDataProducts = async () => {
-    await getProducts({ pageNumber, setPagesCount, filter })
+    setIsLoading(true)
+    await getProducts({ pageNumber, setPagesCount, filter, valueField })
       .then((response) => {
-        if (!filter) {
-          const dataProductList = uniqBy(response.data.result, 'id')
-          setProductList(dataProductList)
-        }
-
-        if (filter) {
-          let dataFieldPopup
-          const uniq = (value, index, array) => array.indexOf(value) === index
-
-          const dataFieldPopupFilter = response.data.result
-            .map((field) => field ?? null)
-            .filter((i) => i)
-            .filter(uniq)
-
-          if (filter === 'price') {
-            dataFieldPopup = dataFieldPopupFilter.sort(
-              (a, b) => Date.parse(a) - Date.parse(b),
-            )
-          } else {
-            dataFieldPopup = dataFieldPopupFilter.sort()
-          }
-
-          setFieldPopup(dataFieldPopup)
-        }
-
-        // if (filter && valueField) {
-        //   setProductList(response.data.result)
-        // }
+        const dataProductList = uniqBy(response.data.result, 'id')
+        setProductList(dataProductList)
       })
       .catch((er) => {
         if (er.response.status === 500) {
@@ -62,7 +36,7 @@ export const MainPage = () => {
 
   useEffect(() => {
     getDataProducts()
-  }, [pageNumber, filter])
+  }, [pageNumber, valueField])
 
   const handleNextPageClick = useCallback(() => {
     const current = pageNumber
@@ -85,8 +59,8 @@ export const MainPage = () => {
     <>
       <S.MainTitle>Список товаров</S.MainTitle>
       <Filters
-        fieldPopup={fieldPopup}
         setFilter={setFilter}
+        setValueField={setValueField}
       />
       <S.MainContent>
         <S.ProductListTitle01>Название</S.ProductListTitle01>

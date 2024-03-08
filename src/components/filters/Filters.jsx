@@ -1,13 +1,38 @@
 import { useState } from 'react'
 import * as S from './Filters.styles'
 import { Popup } from './Popup'
+import { getFields } from '../../api/apiProduct'
 
-export const Filters = ({ fieldPopup, setFilter }) => {
+export const Filters = ({ setFilter, setValueField }) => {
+  const [fieldPopup, setFieldPopup] = useState([])
   const [activeFilter, setActiveFilter] = useState()
 
-  const handleActiveFilter = (filter) => {
-    setActiveFilter(filter)
+  const handleFilter = async (filter) => {
+    setActiveFilter(activeFilter === filter ? null : filter)
     setFilter(filter)
+    await getFields({ filter })
+      .then((response) => {
+        let dataFieldPopup
+        const uniq = (value, index, array) => array.indexOf(value) === index
+
+        const dataFieldPopupFilter = response.data.result
+          .map((field) => field ?? null)
+          .filter((i) => i)
+          .filter(uniq)
+
+        if (filter === 'price') {
+          dataFieldPopup = dataFieldPopupFilter.sort(
+            (a, b) => Date.parse(a) - Date.parse(b),
+          )
+        } else {
+          dataFieldPopup = dataFieldPopupFilter.sort()
+        }
+
+        setFieldPopup(dataFieldPopup)
+      })
+      .catch((er) => {
+        console.log(er)
+      })
   }
 
   return (
@@ -17,33 +42,36 @@ export const Filters = ({ fieldPopup, setFilter }) => {
         aria-hidden="true"
         key="product"
         $activeButton={activeFilter === 'product'}
-        onClick={() => handleActiveFilter('product')}
+        onClick={() => handleFilter('product')}
       >
         названию
       </S.FilterButton>
-      {activeFilter === 'product' && (
-        <Popup data={fieldPopup} />
-      )}
 
       <S.FilterButton
         aria-hidden="true"
         key="price"
         $activeButton={activeFilter === 'price'}
-        onClick={() => handleActiveFilter('price')}
+        onClick={() => handleFilter('price')}
       >
         цене
       </S.FilterButton>
-      {activeFilter === 'price' && <Popup data={fieldPopup} />}
 
       <S.FilterButton
         aria-hidden="true"
         key="brand"
         $activeButton={activeFilter === 'brand'}
-        onClick={() => handleActiveFilter('brand')}
+        onClick={() => handleFilter('brand')}
       >
         бренду
       </S.FilterButton>
-      {activeFilter === 'brand' && <Popup data={fieldPopup} />}
+
+      {activeFilter && (
+        <Popup
+          data={fieldPopup}
+          setValueField={setValueField}
+          setActiveFilter={setActiveFilter}
+        />
+      )}
     </S.FilterContainer>
   )
 }

@@ -1,6 +1,7 @@
 import * as S from './Products.styles'
 
 export const Products = ({ productList }) => {
+
   return (
     <S.ProductsList>
       {productList?.map((product) => (

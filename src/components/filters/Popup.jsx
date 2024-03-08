@@ -1,6 +1,10 @@
 import * as S from './Filters.styles'
 
-export const Popup = ({ data }) => {
+export const Popup = ({ data, setValueField, setActiveFilter }) => {
+  const handleActiveFilter = (element) => {
+    setValueField(element)
+    setActiveFilter(null)
+  }
   return (
     <S.FilterPopup>
       <S.PopupList>
@@ -8,8 +12,7 @@ export const Popup = ({ data }) => {
           return (
             <S.PopupText
               key={element}
-              // onClick={() => handlerSetField(element)}
-              // $activeFilter={artist && authorTrack.includes(artist)}
+              onClick={() => handleActiveFilter(element)}
             >
               {element}
             </S.PopupText>

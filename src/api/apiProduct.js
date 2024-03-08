@@ -14,7 +14,7 @@ export async function getProducts({
   pageNumber,
   setPagesCount,
   filter,
-  // valueField,
+  valueField,
 }) {
   if (!filter) {
     const responseId = await axios.post(
@@ -51,54 +51,103 @@ export async function getProducts({
     )
     return response
   }
-  if (filter) {
+
+  if (filter === 'product' && valueField) {
+    const responseProductList = await axios.post(
+      BASE_URL,
+      {
+        action: 'filter',
+        params: {
+          product: valueField,
+        },
+      },
+      authHeder,
+    )
+    setPagesCount(Math.ceil(responseProductList.data.result.length / PER_PAGE))
+
     const response = await axios.post(
       BASE_URL,
       {
-        action: 'get_fields',
+        action: 'get_items',
         params: {
-          field: filter,
+          ids: responseProductList.data.result,
+          offset: pageNumber,
+          limit: PER_PAGE,
+        },
+      },
+      authHeder,
+    )
+
+    return response
+  }
+
+  if (filter === 'price' && valueField) {
+    const responsePriceList = await axios.post(
+      BASE_URL,
+      {
+        action: 'filter',
+        params: {
+          price: valueField,
+        },
+      },
+      authHeder,
+    )
+    setPagesCount(Math.ceil(responsePriceList.data.result.length / PER_PAGE))
+
+    const response = await axios.post(
+      BASE_URL,
+      {
+        action: 'get_items',
+        params: {
+          ids: responsePriceList.data.result,
+          offset: pageNumber,
+          limit: PER_PAGE,
         },
       },
       authHeder,
     )
     return response
   }
-  // if (filter && valueField) {
-  //   const response = await axios.post(
-  //     BASE_URL,
-  //     {
-  //       action: 'filter',
-  //       params: {
-  //         filter: valueField,
-  //       },
-  //     },
-  //     authHeder,
-  //   )
-  //   return response
-  // }
 
-  // console.log(`first ${responseFields}`)
-  // console.log(`second ${responseCurrentField}`)
-  // const response = await axios.post(
-  //   BASE_URL,
-  //   {
-  //     action: 'get_items',
-  //     params: {
-  //       ids: responseCurrentField.data.result,
-  //     },
-  //   },
-  //   authHeder,
-  // )
+  if (filter === 'brand' && valueField) {
+    const responseBrandList = await axios.post(
+      BASE_URL,
+      {
+        action: 'filter',
+        params: {
+          brand: valueField,
+        },
+      },
+      authHeder,
+    )
+    setPagesCount(Math.ceil(responseBrandList.data.result.length / PER_PAGE))
+
+    const response = await axios.post(
+      BASE_URL,
+      {
+        action: 'get_items',
+        params: {
+          ids: responseBrandList.data.result,
+          offset: pageNumber,
+          limit: PER_PAGE,
+        },
+      },
+      authHeder,
+    )
+    return response
+  }
 }
 
-// export async function getProductsFilter() {
-//   const [firstResponse, secondResponse] = await Promise.all([
-//     axios.get('https://maps.googleapis.com/maps/api/geocode/json?&address=${this.props.p1}'),
-//     axios.get('https://maps.googleapis.com/maps/api/geocode/json?&address=${this.props.p2}')
-//   ]);
-
-//   // Make third request using responses from the first two
-//   const thirdResponse = await axios.get('https://maps.googleapis.com/maps/api/directions/json?origin=place_id:' + firstResponse.data.results.place_id + '&destination=place_id:' + secondResponse.data.results.place_id + '&key=' + 'API-KEY-HIDDEN');
-
-// }
+export async function getFields({ filter }) {
+  const response = await axios.post(
+    BASE_URL,
+    {
+      action: 'get_fields',
+      params: {
+        field: filter,
+      },
+    },
+    authHeder,
+  )
+  return response
+}
