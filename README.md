@@ -51,5 +51,4 @@ npm run start
 
 ## Деплой приложения
 
-Приложение доступно по ссылке
-tiny-treacle-2ead34.netlify.app
+Приложение доступно [по ссылке](https://tiny-treacle-2ead34.netlify.app)
